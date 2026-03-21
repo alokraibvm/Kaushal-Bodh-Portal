@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaushal Bodh Portal</title>
+<style>
+:root{
+--bg-1:#12345f;
+--bg-2:#2f6faa;
+--panel:#ffffff;
+--line:#d8e4f2;
+--text:#17314f;
+--muted:#64748b;
+--accent:#ef8c1d;
+--shadow:0 24px 60px rgba(12, 35, 70, 0.2);
+}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+min-height:100vh;
+padding:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-family:"Trebuchet MS","Gill Sans",sans-serif;
+color:var(--text);
+background:
+radial-gradient(circle at top left, rgba(255,255,255,0.24), transparent 20%),
+linear-gradient(135deg, #102847, #2f6faa 62%, #d8a84a 145%);
+}
+
+.shell{
+width:min(1160px, 100%);
+display:grid;
+grid-template-columns:330px 1fr;
+background:rgba(255,255,255,0.96);
+border-radius:30px;
+overflow:hidden;
+box-shadow:var(--shadow);
+}
+
+.sidebar{
+padding:34px 28px;
+background:
+linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
+linear-gradient(180deg, #1a3d6d, #102847);
+color:#f4f9ff;
+display:flex;
+flex-direction:column;
+gap:22px;
+}
+
+.sidebar img{
+width:96px;
+height:96px;
+padding:10px;
+border-radius:24px;
+background:rgba(255,255,255,0.12);
+object-fit:contain;
+}
+
+.sidebar h1{
+margin:0;
+font-size:2rem;
+line-height:1.05;
+}
+
+.sidebar p{
+margin:0;
+line-height:1.6;
+color:rgba(244,249,255,0.84);
+}
+
+.sidebar-card{
+padding:16px;
+border-radius:20px;
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-card strong{
+display:block;
+margin-bottom:6px;
+font-size:1rem;
+}
+
+.content{
+padding:36px;
+background:linear-gradient(180deg, #ffffff, #edf5ff);
+}
+
+.hero{
+margin-bottom:24px;
+}
+
+.hero h2{
+margin:0 0 10px;
+font-size:2.25rem;
+color:#173965;
+}
+
+.hero p{
+margin:0;
+max-width:700px;
+line-height:1.6;
+color:var(--muted);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4, minmax(0, 1fr));
+gap:18px;
+}
+
+.card{
+padding:24px 22px;
+border-radius:26px;
+background:#fff;
+border:1px solid var(--line);
+box-shadow:0 14px 34px rgba(20, 55, 100, 0.08);
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.badge{
+display:inline-flex;
+align-items:center;
+gap:8px;
+width:max-content;
+padding:8px 14px;
+border-radius:999px;
+background:#eaf2fc;
+color:#214b79;
+font-size:0.88rem;
+font-weight:700;
+}
+
+.card h3{
+margin:0;
+font-size:1.4rem;
+color:#173965;
+}
+
+.card p{
+margin:0;
+line-height:1.55;
+color:var(--muted);
+min-height:96px;
+}
+
+.card a,
+.card button{
+margin-top:auto;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:14px 18px;
+border-radius:16px;
+font:inherit;
+font-weight:700;
+text-decoration:none;
+border:none;
+cursor:pointer;
+transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card a:hover,
+.card button:hover{
+transform:translateY(-2px);
+}
+
+.primary{
+background:linear-gradient(90deg, #173965, #2f6faa);
+color:#fff;
+box-shadow:0 16px 30px rgba(23, 57, 101, 0.18);
+}
+
+.secondary{
+background:#fff1df;
+color:#8c5403;
+box-shadow:0 16px 30px rgba(239,140,29,0.14);
+}
+
+.muted{
+background:#eef5ff;
+color:#214b79;
+box-shadow:0 16px 30px rgba(47,111,170,0.12);
+}
+
+#message{
+min-height:28px;
+margin-top:18px;
+font-weight:700;
+color:#bf3c2c;
+}
+
+@media (max-width: 960px){
+.shell{
+grid-template-columns:1fr;
+}
+
+.content,
+.sidebar{
+padding:26px 22px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.card p{
+min-height:auto;
+}
+}
+
+@media (max-width: 640px){
+body{
+padding:12px;
+}
+
+.hero h2{
+font-size:1.9rem;
+}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+<div>
+<img src="logo.png" alt="School logo">
+<h1>Kaushal Bodh Portal</h1>
+<p>Use this home page to open the teacher activity form, parent activity search, and student selection form from one place.</p>
+</div>
+
+<div class="sidebar-card">
+<strong>Teacher Access</strong>
+<span>The teacher page is protected with a password before opening.</span>
+</div>
+
+<div class="sidebar-card">
+<strong>Public Access</strong>
+<span>The parent page and student selection page are open for direct access.</span>
+</div>
+</aside>
+
+<main class="content">
+<section class="hero">
+<h2>Choose Your Page</h2>
+<p>This portal keeps the teacher activity area private while leaving parent search and student activity selection available to everyone.</p>
+</section>
+
+<section class="grid">
+<article class="card">
+<div class="badge">Protected</div>
+<h3>Teacher Activity Form</h3>
+<p>Open the activity planning page used by teachers to submit monthly activity details to Google Sheets.</p>
+<button class="primary" id="teacherBtn" type="button">Open Teacher Form</button>
+</article>
+
+<article class="card">
+<div class="badge">Public</div>
+<h3>Parent Activity View</h3>
+<p>Search activities by month, skill program, and class group to view materials, video links, and outcomes.</p>
+<a class="secondary" href="parent_activity_view.html">Open Parent Page</a>
+</article>
+
+<article class="card">
+<div class="badge">Public</div>
+<h3>Student Selection Form</h3>
+<p>Open the student activity selection form for Kaushal Bodh registration and seat checking.</p>
+<a class="muted" href="new.html">Open Student Form</a>
+</article>
+
+<article class="card">
+<div class="badge">Guide</div>
+<h3>How To Use</h3>
+<p>Open the YouTube guide to see how to use the teacher form, parent page, and student selection page.</p>
+<a class="secondary" id="tutorialLink" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch Tutorial</a>
+</article>
+</section>
+
+<div id="message"></div>
+</main>
+</div>
+
+<script>
+const teacherPassword = "Bvm@2026";
+const teacherPage = "teacher_activity_form.html";
+const tutorialVideoUrl = "https://www.youtube.com/";
+const message = document.getElementById("message");
+const tutorialLink = document.getElementById("tutorialLink");
+
+tutorialLink.href = tutorialVideoUrl;
+
+document.getElementById("teacherBtn").addEventListener("click", () => {
+message.textContent = "";
+const enteredPassword = window.prompt("Enter teacher password:");
+
+if (enteredPassword === null) {
+return;
+}
+
+if (enteredPassword === teacherPassword) {
+window.location.href = teacherPage;
+return;
+}
+
+message.textContent = "Incorrect password. Please try again.";
+});
+</script>
+</body>
+</html>
