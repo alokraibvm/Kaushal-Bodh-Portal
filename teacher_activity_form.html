@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Activity Entry</title>
+<style>
+:root{
+--bg-dark:#12305b;
+--bg-light:#e7f1ff;
+--panel:#ffffff;
+--text:#17304f;
+--muted:#64748b;
+--line:#d8e4f2;
+--accent:#e98a15;
+--accent-dark:#c96f00;
+--accent-soft:#fff2de;
+--success:#138a5a;
+--danger:#c0392b;
+--focus:#2d69a8;
+--shadow:0 24px 60px rgba(9, 30, 66, 0.18);
+}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:"Trebuchet MS","Gill Sans",sans-serif;
+min-height:100vh;
+padding:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:
+radial-gradient(circle at top right, rgba(255,255,255,0.28), transparent 18%),
+linear-gradient(135deg, #102846, #2d69a8 58%, #d8a645 140%);
+color:var(--text);
+}
+
+.page{
+width:min(1180px, 100%);
+display:grid;
+grid-template-columns:340px 1fr;
+background:rgba(255,255,255,0.94);
+border-radius:28px;
+overflow:hidden;
+box-shadow:var(--shadow);
+}
+
+.sidebar{
+padding:34px 30px;
+color:#f6fbff;
+background:
+linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+linear-gradient(180deg, #183c6d, #102746);
+display:flex;
+flex-direction:column;
+gap:24px;
+}
+
+.sidebar img{
+width:92px;
+height:92px;
+object-fit:contain;
+padding:10px;
+background:rgba(255,255,255,0.12);
+border-radius:22px;
+}
+
+.sidebar h1{
+margin:0;
+font-size:2rem;
+line-height:1.05;
+}
+
+.sidebar p{
+margin:0;
+line-height:1.6;
+color:rgba(246,251,255,0.82);
+}
+
+.tag{
+display:inline-flex;
+align-items:center;
+gap:10px;
+padding:9px 14px;
+width:max-content;
+border-radius:999px;
+background:rgba(255,255,255,0.12);
+font-size:0.92rem;
+}
+
+.tag::before{
+content:"";
+width:10px;
+height:10px;
+border-radius:50%;
+background:#ffd166;
+}
+
+.sheet-list{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.sheet-chip{
+padding:12px;
+border-radius:16px;
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.08);
+font-size:0.88rem;
+}
+
+.content{
+padding:34px;
+background:linear-gradient(180deg, #ffffff, var(--bg-light));
+}
+
+.hero-card{
+position:relative;
+padding:26px 28px;
+margin-bottom:22px;
+border:1px solid rgba(216,228,242,0.95);
+border-radius:26px;
+background:
+radial-gradient(circle at top right, rgba(233,138,21,0.18), transparent 24%),
+linear-gradient(135deg, rgba(255,255,255,0.98), rgba(231,241,255,0.92));
+box-shadow:0 18px 40px rgba(17, 52, 95, 0.08);
+overflow:hidden;
+}
+
+.hero-card::after{
+content:"";
+position:absolute;
+right:-26px;
+bottom:-32px;
+width:170px;
+height:170px;
+border-radius:50%;
+background:rgba(24,60,109,0.08);
+}
+
+.hero{
+display:flex;
+justify-content:space-between;
+gap:24px;
+align-items:flex-start;
+position:relative;
+z-index:1;
+}
+
+.hero h2{
+margin:0 0 8px;
+font-size:2rem;
+color:#173965;
+}
+
+.hero p{
+margin:0;
+max-width:640px;
+color:var(--muted);
+line-height:1.55;
+}
+
+.hero-badge{
+display:inline-flex;
+align-items:center;
+gap:10px;
+padding:11px 16px;
+border-radius:999px;
+background:#173965;
+color:#fff;
+font-weight:700;
+box-shadow:0 16px 34px rgba(23,57,101,0.22);
+}
+
+.hero-badge strong{
+font-size:1.1rem;
+}
+
+.hero-stats{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:14px;
+margin-top:22px;
+position:relative;
+z-index:1;
+}
+
+.stat-card{
+padding:16px 18px;
+border-radius:20px;
+background:rgba(255,255,255,0.82);
+border:1px solid rgba(216,228,242,0.9);
+}
+
+.stat-card span{
+display:block;
+font-size:0.8rem;
+letter-spacing:0.04em;
+text-transform:uppercase;
+color:var(--muted);
+margin-bottom:6px;
+}
+
+.stat-card strong{
+font-size:1.35rem;
+color:#173965;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:18px;
+}
+
+.field{
+display:flex;
+flex-direction:column;
+padding:18px;
+border-radius:22px;
+border:1px solid rgba(216,228,242,0.95);
+background:rgba(255,255,255,0.88);
+box-shadow:0 10px 24px rgba(17, 52, 95, 0.05);
+transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.field.full{
+grid-column:1 / -1;
+}
+
+.field.active{
+transform:translateY(-2px);
+border-color:rgba(45,105,168,0.45);
+box-shadow:0 16px 30px rgba(17, 52, 95, 0.11);
+}
+
+label{
+font-size:0.92rem;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.field-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+margin-bottom:8px;
+}
+
+.field-note{
+font-size:0.82rem;
+font-weight:700;
+color:var(--muted);
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:14px 15px;
+border-radius:16px;
+border:1px solid var(--line);
+background:#fff;
+font:inherit;
+color:var(--text);
+transition:border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+textarea{
+min-height:120px;
+resize:vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+outline:none;
+border-color:var(--focus);
+box-shadow:0 0 0 4px rgba(45,105,168,0.14);
+transform:translateY(-1px);
+}
+
+.input-shell{
+position:relative;
+}
+
+.character-meter{
+margin-top:8px;
+font-size:0.82rem;
+font-weight:700;
+color:var(--muted);
+text-align:right;
+}
+
+.helper-text{
+margin-top:8px;
+font-size:0.84rem;
+color:var(--muted);
+}
+
+.date-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+}
+
+.radio-group{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+}
+
+.radio-option{
+display:flex;
+align-items:center;
+gap:10px;
+padding:14px 16px;
+border-radius:16px;
+border:1px solid var(--line);
+background:#fff;
+font-weight:700;
+cursor:pointer;
+transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.radio-option input{
+width:auto;
+margin:0;
+}
+
+.radio-option.selected{
+border-color:rgba(45,105,168,0.5);
+background:linear-gradient(135deg, rgba(231,241,255,0.95), rgba(255,242,222,0.95));
+box-shadow:0 14px 28px rgba(17, 52, 95, 0.1);
+transform:translateY(-1px);
+}
+
+.preview{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+margin:22px 0;
+}
+
+.panel{
+padding:18px;
+border-radius:20px;
+background:rgba(255,255,255,0.92);
+border:1px solid var(--line);
+box-shadow:0 12px 30px rgba(20, 55, 100, 0.08);
+}
+
+.panel h3{
+margin:0 0 10px;
+font-size:1rem;
+color:#173965;
+}
+
+.preview-list{
+display:grid;
+gap:8px;
+color:var(--muted);
+font-size:0.95rem;
+}
+
+.preview-item{
+display:grid;
+grid-template-columns:130px 1fr;
+gap:10px;
+padding:10px 12px;
+border-radius:14px;
+background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(240,246,255,0.95));
+border:1px solid rgba(216,228,242,0.85);
+}
+
+.preview-list strong{
+color:var(--text);
+}
+
+.progress-track{
+height:12px;
+background:#dbe8f6;
+border-radius:999px;
+overflow:hidden;
+margin-top:12px;
+}
+
+.progress-bar{
+height:100%;
+width:0;
+background:linear-gradient(90deg, var(--accent), var(--accent-dark));
+transition:width 0.25s ease;
+}
+
+.progress-panel{
+display:grid;
+gap:14px;
+}
+
+.progress-summary{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:16px;
+}
+
+.progress-ring{
+position:relative;
+width:64px;
+height:64px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:conic-gradient(var(--accent) 0deg, #dbe8f6 0deg);
+}
+
+.progress-ring::before{
+content:"";
+position:absolute;
+width:46px;
+height:46px;
+border-radius:50%;
+background:#fff;
+}
+
+.progress-value{
+position:absolute;
+z-index:1;
+font-size:0.9rem;
+font-weight:800;
+color:#173965;
+}
+
+.status-ribbon{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:10px 14px;
+border-radius:999px;
+background:var(--accent-soft);
+color:#9a5b00;
+font-weight:700;
+}
+
+.panel.success-glow{
+box-shadow:0 18px 40px rgba(19, 138, 90, 0.18);
+border-color:rgba(19, 138, 90, 0.25);
+}
+
+.actions{
+display:flex;
+gap:14px;
+align-items:center;
+}
+
+.submit-btn{
+flex:1;
+padding:16px;
+border:none;
+border-radius:18px;
+font:inherit;
+font-weight:700;
+font-size:1rem;
+cursor:pointer;
+color:#fff;
+background:linear-gradient(90deg, #173965, #2d69a8);
+box-shadow:0 18px 34px rgba(23, 57, 101, 0.2);
+transition:transform 0.2s ease, opacity 0.2s ease;
+}
+
+.submit-btn:hover{
+transform:translateY(-2px);
+}
+
+.submit-btn:disabled{
+opacity:0.7;
+cursor:wait;
+transform:none;
+}
+
+.clear-btn{
+padding:16px 20px;
+border-radius:18px;
+border:1px solid #c6d7ea;
+background:#fff;
+font:inherit;
+font-weight:700;
+cursor:pointer;
+color:#2d4f77;
+}
+
+#response{
+min-height:28px;
+margin-top:14px;
+font-weight:700;
+padding:14px 18px;
+border-radius:18px;
+background:rgba(255,255,255,0.72);
+border:1px solid transparent;
+display:none;
+}
+
+.success{
+color:var(--success);
+border-color:rgba(19, 138, 90, 0.2);
+background:rgba(19, 138, 90, 0.08);
+}
+
+.error{
+color:var(--danger);
+border-color:rgba(192, 57, 43, 0.18);
+background:rgba(192, 57, 43, 0.08);
+}
+
+.reveal{
+animation:fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(12px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@media (max-width: 960px){
+.page{
+grid-template-columns:1fr;
+}
+
+.content,
+.sidebar{
+padding:26px 22px;
+}
+
+.form-grid,
+.preview{
+grid-template-columns:1fr;
+}
+
+.hero{
+flex-direction:column;
+}
+
+.hero-stats{
+grid-template-columns:1fr;
+}
+}
+
+@media (max-width: 640px){
+body{
+padding:12px;
+}
+
+.date-grid{
+grid-template-columns:1fr;
+}
+
+.sheet-list{
+grid-template-columns:1fr;
+}
+
+.actions{
+flex-direction:column;
+}
+
+.submit-btn,
+.clear-btn{
+width:100%;
+}
+
+.preview-item{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<aside class="sidebar">
+<div>
+<img src="logo.png" alt="School logo">
+<h1>Teacher Activity Planner</h1>
+<p>Enter activity details for any Kaushal Bodh skill program. Each submission is stored in the matching Google Sheet tab for that skill.</p>
+</div>
+
+<div class="tag">9 skill sheets connected</div>
+
+<div class="sheet-list">
+<div class="sheet-chip">Jigyasa Junction</div>
+<div class="sheet-chip">Prakriti Rakshak</div>
+<div class="sheet-chip">Abhivyakti</div>
+<div class="sheet-chip">Chitrakala</div>
+<div class="sheet-chip">Nritya Tarang</div>
+<div class="sheet-chip">Swaranjali</div>
+<div class="sheet-chip">Swasthya Sangam</div>
+<div class="sheet-chip">Srijan Shala</div>
+<div class="sheet-chip">Khoj Kendra</div>
+</div>
+</aside>
+
+<main class="content">
+<div class="hero-card reveal">
+<div class="hero">
+<div>
+<h2>Submit Activity Details</h2>
+<p>Build a polished classroom activity entry with clear planning, class selection, materials, and learning outcome details, then send it straight to the right Google Sheet.</p>
+</div>
+<div class="hero-badge">Ready to submit <strong id="heroProgress">0%</strong></div>
+</div>
+
+<div class="hero-stats">
+<div class="stat-card">
+<span>Class Range</span>
+<strong id="heroClass">Not selected</strong>
+</div>
+<div class="stat-card">
+<span>Activity Code</span>
+<strong id="heroActivityId">Pending</strong>
+</div>
+<div class="stat-card">
+<span>Selected Skill</span>
+<strong id="heroSkill">Choose a skill</strong>
+</div>
+</div>
+</div>
+
+<form id="teacherActivityForm" method="POST" target="submitFrame">
+<input type="hidden" name="action" value="saveTeacherActivity">
+<div class="form-grid">
+<div class="field">
+<div class="field-head">
+<label for="skillProgram">Skill Program</label>
+<span class="field-note">Choose sheet</span>
+</div>
+<select id="skillProgram" name="skillProgram" required>
+<option value="">Select Skill Program</option>
+<option>Jigyasa Junction</option>
+<option>Prakriti Rakshak</option>
+<option>Abhivyakti</option>
+<option>Chitrakala</option>
+<option>Nritya Tarang</option>
+<option>Swaranjali</option>
+<option>Swasthya Sangam</option>
+<option>Srijan Shala</option>
+<option>Khoj Kendra</option>
+</select>
+<div class="helper-text">Each program is saved to its matching Google Sheet tab.</div>
+</div>
+
+<div class="field">
+<div class="field-head">
+<label>Date</label>
+<span class="field-note">Schedule day</span>
+</div>
+<div class="date-grid">
+<select id="day" name="day" required></select>
+<select id="month" name="month" required></select>
+<select id="year" name="year" required></select>
+</div>
+<div class="helper-text">Select the exact day this activity is planned for.</div>
+</div>
+
+<div class="field">
+<div class="field-head">
+<label for="activityId">Activity ID</label>
+<span class="field-note" id="activityIdHint">Unique code</span>
+</div>
+<div class="input-shell">
+<input id="activityId" name="activityId" type="text" placeholder="Enter activity ID" required>
+</div>
+<div class="helper-text">Use a short code like `ACT-101` for easy sheet tracking.</div>
+</div>
+
+<div class="field">
+<div class="field-head">
+<label>Class Group</label>
+<span class="field-note">Required</span>
+</div>
+<div class="radio-group">
+<label class="radio-option" for="classGroupPrimary">
+<input id="classGroupPrimary" name="classGroup" type="radio" value="Class III to V" required>
+<span>Class III to V</span>
+</label>
+<label class="radio-option" for="classGroupMiddle">
+<input id="classGroupMiddle" name="classGroup" type="radio" value="Class VI to VIII" required>
+<span>Class VI to VIII</span>
+</label>
+</div>
+<div class="helper-text">Pick the class band that will use this activity plan.</div>
+</div>
+
+<div class="field full">
+<div class="field-head">
+<label for="activity">Activity</label>
+<span class="field-note">Main description</span>
+</div>
+<textarea id="activity" name="activity" placeholder="Enter the classroom activity for this skill program" required></textarea>
+<div class="character-meter"><span id="activityCount">0</span> characters</div>
+</div>
+
+<div class="field full">
+<div class="field-head">
+<label for="materials">Material Required</label>
+<span class="field-note">List supplies</span>
+</div>
+<textarea id="materials" name="materials" placeholder="Enter all required materials" required></textarea>
+<div class="character-meter"><span id="materialsCount">0</span> characters</div>
+</div>
+
+<div class="field full">
+<div class="field-head">
+<label for="youtubeLink">YouTube Link</label>
+<span class="field-note">Video support</span>
+</div>
+<input id="youtubeLink" name="youtubeLink" type="text" placeholder="Paste YouTube link if available">
+<div class="helper-text">Paste a YouTube lesson or reference video link.</div>
+</div>
+
+<div class="field full">
+<div class="field-head">
+<label for="outcome">Student Outcome</label>
+<span class="field-note">Learning goal</span>
+</div>
+<textarea id="outcome" name="outcome" placeholder="What will students learn from this activity?" required></textarea>
+<div class="character-meter"><span id="outcomeCount">0</span> characters</div>
+</div>
+</div>
+
+<div class="preview">
+<div class="panel reveal" id="previewPanel">
+<h3>Live Preview</h3>
+<div class="preview-list">
+<div class="preview-item"><strong>Skill</strong><span data-preview="skillProgram">Not selected</span></div>
+<div class="preview-item"><strong>Date</strong><span data-preview="date">Not selected</span></div>
+<div class="preview-item"><strong>Activity ID</strong><span data-preview="activityId">Not entered</span></div>
+<div class="preview-item"><strong>Class Group</strong><span data-preview="classGroup">Not selected</span></div>
+<div class="preview-item"><strong>Activity</strong><span data-preview="activity">Not entered</span></div>
+<div class="preview-item"><strong>Materials</strong><span data-preview="materials">Not entered</span></div>
+<div class="preview-item"><strong>YouTube</strong><span data-preview="youtubeLink">Not entered</span></div>
+<div class="preview-item"><strong>Outcome</strong><span data-preview="outcome">Not entered</span></div>
+</div>
+</div>
+
+<div class="panel reveal" id="progressPanel">
+<h3>Completion</h3>
+<div class="progress-panel">
+<div class="progress-summary">
+<div>
+<div id="completionText">0 of 8 fields completed</div>
+<div class="status-ribbon" id="statusRibbon">Start filling the form</div>
+</div>
+<div class="progress-ring" id="progressRing">
+<span class="progress-value" id="progressValue">0%</span>
+</div>
+</div>
+<div class="progress-track">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+</div>
+</div>
+
+<div class="actions">
+<button type="submit" class="submit-btn" id="submitBtn">Save to Google Sheet</button>
+<button type="button" class="clear-btn" id="clearBtn">Clear Form</button>
+</div>
+</form>
+
+<div id="response"></div>
+<iframe name="submitFrame" id="submitFrame" style="display:none;"></iframe>
+</main>
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycby9H40NMocJW2_8sSZYvaq77Oy29aFUNT7bpd1sJSjiy97EKjuzgio1vPf7TRE9judncg/exec";
+
+const form = document.getElementById("teacherActivityForm");
+const submitBtn = document.getElementById("submitBtn");
+const clearBtn = document.getElementById("clearBtn");
+const response = document.getElementById("response");
+const progressBar = document.getElementById("progressBar");
+const completionText = document.getElementById("completionText");
+const submitFrame = document.getElementById("submitFrame");
+const progressRing = document.getElementById("progressRing");
+const progressValue = document.getElementById("progressValue");
+const statusRibbon = document.getElementById("statusRibbon");
+const heroProgress = document.getElementById("heroProgress");
+const heroClass = document.getElementById("heroClass");
+const heroActivityId = document.getElementById("heroActivityId");
+const heroSkill = document.getElementById("heroSkill");
+const activityIdHint = document.getElementById("activityIdHint");
+const progressPanel = document.getElementById("progressPanel");
+
+const monthNames = [
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+
+function populateDateFields() {
+const daySelect = document.getElementById("day");
+const monthSelect = document.getElementById("month");
+const yearSelect = document.getElementById("year");
+const currentYear = new Date().getFullYear();
+
+daySelect.innerHTML = '<option value="">Day</option>';
+for (let day = 1; day <= 31; day += 1) {
+const option = document.createElement("option");
+option.value = String(day).padStart(2, "0");
+option.textContent = String(day).padStart(2, "0");
+daySelect.appendChild(option);
+}
+
+monthSelect.innerHTML = '<option value="">Month</option>';
+monthNames.forEach((month, index) => {
+const option = document.createElement("option");
+option.value = String(index + 1).padStart(2, "0");
+option.textContent = month;
+monthSelect.appendChild(option);
+});
+
+yearSelect.innerHTML = '<option value="">Year</option>';
+for (let year = currentYear - 1; year <= currentYear + 5; year += 1) {
+const option = document.createElement("option");
+option.value = String(year);
+option.textContent = String(year);
+yearSelect.appendChild(option);
+}
+}
+
+function getSelectedDate() {
+const day = document.getElementById("day").value;
+const month = document.getElementById("month").value;
+const year = document.getElementById("year").value;
+
+if (!day || !month || !year) {
+return "";
+}
+
+return `${year}-${month}-${day}`;
+}
+
+function setResponse(message, type) {
+response.className = type;
+response.innerHTML = `<p>${message}</p>`;
+response.style.display = "block";
+}
+
+function updateCharacterCounters() {
+document.getElementById("activityCount").textContent = document.getElementById("activity").value.trim().length;
+document.getElementById("materialsCount").textContent = document.getElementById("materials").value.trim().length;
+document.getElementById("outcomeCount").textContent = document.getElementById("outcome").value.trim().length;
+}
+
+function updateRadioCards() {
+document.querySelectorAll(".radio-option").forEach((option) => {
+const radio = option.querySelector('input[type="radio"]');
+option.classList.toggle("selected", radio.checked);
+});
+}
+
+function updateFieldStates() {
+document.querySelectorAll(".field").forEach((field) => {
+const interactive = field.querySelector("input, select, textarea");
+if (!interactive) {
+return;
+}
+const hasValue = interactive.type === "radio"
+? Boolean(document.querySelector('input[name="classGroup"]:checked'))
+: Boolean(interactive.value.trim());
+field.classList.toggle("active", hasValue || field.contains(document.activeElement));
+});
+}
+
+function updatePreview() {
+const values = {
+skillProgram: document.getElementById("skillProgram").value || "Not selected",
+date: getSelectedDate() || "Not selected",
+activityId: document.getElementById("activityId").value.trim() || "Not entered",
+classGroup: document.querySelector('input[name="classGroup"]:checked')?.value || "Not selected",
+activity: document.getElementById("activity").value.trim() || "Not entered",
+materials: document.getElementById("materials").value.trim() || "Not entered",
+youtubeLink: document.getElementById("youtubeLink").value.trim() || "Not entered",
+outcome: document.getElementById("outcome").value.trim() || "Not entered"
+};
+
+Object.entries(values).forEach(([key, value]) => {
+document.querySelector(`[data-preview="${key}"]`).textContent = value;
+});
+
+heroClass.textContent = values.classGroup === "Not selected" ? "Not selected" : values.classGroup;
+heroActivityId.textContent = values.activityId === "Not entered" ? "Pending" : values.activityId;
+heroSkill.textContent = values.skillProgram === "Not selected" ? "Choose a skill" : values.skillProgram;
+activityIdHint.textContent = values.activityId === "Not entered" ? "Unique code" : "Ready";
+}
+
+function updateProgress() {
+const fields = [
+document.getElementById("skillProgram").value.trim(),
+getSelectedDate(),
+document.getElementById("activityId").value.trim(),
+document.querySelector('input[name="classGroup"]:checked')?.value || "",
+document.getElementById("activity").value.trim(),
+document.getElementById("materials").value.trim(),
+document.getElementById("outcome").value.trim()
+];
+
+const completed = fields.filter(Boolean).length;
+const progress = (completed / fields.length) * 100;
+const progressDegrees = Math.round((progress / 100) * 360);
+
+completionText.textContent = `${completed} of ${fields.length} fields completed`;
+progressBar.style.width = `${progress}%`;
+progressRing.style.background = `conic-gradient(var(--accent) ${progressDegrees}deg, #dbe8f6 ${progressDegrees}deg)`;
+progressValue.textContent = `${Math.round(progress)}%`;
+heroProgress.textContent = `${Math.round(progress)}%`;
+
+if (progress === 100) {
+statusRibbon.textContent = "Ready to save";
+progressPanel.classList.add("success-glow");
+} else if (progress >= 50) {
+statusRibbon.textContent = "Halfway there";
+progressPanel.classList.remove("success-glow");
+} else {
+statusRibbon.textContent = "Start filling the form";
+progressPanel.classList.remove("success-glow");
+}
+}
+
+function refreshUI() {
+updatePreview();
+updateProgress();
+updateCharacterCounters();
+updateRadioCards();
+updateFieldStates();
+}
+
+function getFirstEmptyField() {
+const requiredFields = [
+document.getElementById("skillProgram"),
+document.getElementById("day"),
+document.getElementById("month"),
+document.getElementById("year"),
+document.getElementById("activityId"),
+document.getElementById("activity"),
+document.getElementById("materials"),
+document.getElementById("outcome")
+];
+
+const emptyField = requiredFields.find((field) => !field.value.trim());
+if (emptyField) {
+return emptyField;
+}
+
+return document.querySelector('input[name="classGroup"]:checked') ? null : document.getElementById("classGroupPrimary");
+}
+
+form.addEventListener("submit", async (event) => {
+event.preventDefault();
+response.style.display = "none";
+response.innerHTML = "";
+
+if (scriptURL.includes("PASTE_YOUR_DEPLOYED")) {
+setResponse("Add your deployed Apps Script web app URL in the file before submitting.", "error");
+return;
+}
+
+const emptyField = getFirstEmptyField();
+if (emptyField) {
+setResponse("Please fill this field.", "error");
+emptyField.focus();
+return;
+}
+
+submitBtn.disabled = true;
+submitBtn.textContent = "Saving...";
+setResponse("Submitting to Google Sheet...", "success");
+
+form.action = scriptURL;
+
+let handled = false;
+const resetButtonState = () => {
+submitBtn.disabled = false;
+submitBtn.textContent = "Save to Google Sheet";
+};
+
+const successTimer = window.setTimeout(() => {
+if (handled) {
+return;
+}
+handled = true;
+setResponse("Activity submitted successfully.", "success");
+form.reset();
+refreshUI();
+resetButtonState();
+}, 2500);
+
+submitFrame.onload = () => {
+if (handled) {
+return;
+}
+handled = true;
+window.clearTimeout(successTimer);
+setResponse("Activity submitted successfully.", "success");
+form.reset();
+refreshUI();
+resetButtonState();
+};
+
+form.submit();
+});
+
+clearBtn.addEventListener("click", () => {
+form.reset();
+response.style.display = "none";
+response.innerHTML = "";
+refreshUI();
+});
+
+[
+"skillProgram","day","month","year","activityId","activity","materials","youtubeLink","outcome"
+].forEach((id) => {
+document.getElementById(id).addEventListener("input", refreshUI);
+document.getElementById(id).addEventListener("change", refreshUI);
+});
+
+document.querySelectorAll('input[name="classGroup"]').forEach((radio) => {
+radio.addEventListener("change", refreshUI);
+});
+
+document.querySelectorAll("input, select, textarea").forEach((field) => {
+field.addEventListener("focus", updateFieldStates);
+field.addEventListener("blur", updateFieldStates);
+});
+
+populateDateFields();
+refreshUI();
+</script>
+</body>
+</html>
