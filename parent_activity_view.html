@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Activity Search</title>
+<style>
+:root{
+--bg-deep:#14345f;
+--bg-soft:#edf5ff;
+--panel:#ffffff;
+--text:#18314f;
+--muted:#64748b;
+--line:#d6e3f2;
+--accent:#ef8d1f;
+--accent-strong:#d66f00;
+--shadow:0 24px 60px rgba(14, 42, 84, 0.18);
+}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:"Trebuchet MS","Gill Sans",sans-serif;
+min-height:100vh;
+padding:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:
+radial-gradient(circle at top left, rgba(255,255,255,0.25), transparent 20%),
+linear-gradient(135deg, #102847, #2f6aa7 62%, #d8a646 140%);
+color:var(--text);
+}
+
+.page{
+width:min(1160px, 100%);
+display:grid;
+grid-template-columns:330px 1fr;
+background:rgba(255,255,255,0.95);
+border-radius:30px;
+overflow:hidden;
+box-shadow:var(--shadow);
+}
+
+.sidebar{
+padding:32px 28px;
+background:
+linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+linear-gradient(180deg, #1b3f70, #112948);
+color:#f4f9ff;
+display:flex;
+flex-direction:column;
+gap:22px;
+}
+
+.sidebar img{
+width:96px;
+height:96px;
+padding:10px;
+border-radius:22px;
+background:rgba(255,255,255,0.12);
+object-fit:contain;
+}
+
+.sidebar h1{
+margin:0;
+font-size:2rem;
+line-height:1.05;
+}
+
+.sidebar p{
+margin:0;
+line-height:1.6;
+color:rgba(244,249,255,0.82);
+}
+
+.highlight{
+padding:14px 16px;
+border-radius:18px;
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.highlight strong{
+display:block;
+margin-bottom:6px;
+font-size:1rem;
+}
+
+.skill-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.skill-chip{
+padding:12px;
+border-radius:16px;
+background:rgba(255,255,255,0.1);
+font-size:0.88rem;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.content{
+padding:34px;
+background:linear-gradient(180deg, #ffffff, var(--bg-soft));
+}
+
+.hero h2{
+margin:0 0 8px;
+font-size:2rem;
+color:#173965;
+}
+
+.hero p{
+margin:0 0 24px;
+color:var(--muted);
+line-height:1.6;
+max-width:680px;
+}
+
+.filter-box{
+padding:20px;
+border-radius:24px;
+background:#fff;
+border:1px solid var(--line);
+box-shadow:0 12px 28px rgba(20, 55, 100, 0.08);
+}
+
+.filter-grid{
+display:grid;
+grid-template-columns:1fr 1fr 1.2fr auto;
+gap:16px;
+align-items:end;
+}
+
+.field{
+display:flex;
+flex-direction:column;
+}
+
+.radio-group{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+}
+
+.radio-option{
+display:flex;
+align-items:center;
+gap:10px;
+padding:14px 16px;
+border-radius:16px;
+border:1px solid var(--line);
+background:#fff;
+font-weight:700;
+cursor:pointer;
+transition:border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.radio-option input{
+width:auto;
+margin:0;
+}
+
+.radio-option:hover{
+transform:translateY(-1px);
+border-color:#b9cde4;
+}
+
+.radio-option.selected{
+border-color:#2f6aa7;
+box-shadow:0 0 0 4px rgba(47,106,167,0.12);
+background:#f7fbff;
+}
+
+label{
+font-size:0.92rem;
+font-weight:700;
+margin-bottom:8px;
+}
+
+select{
+width:100%;
+padding:14px 15px;
+border-radius:16px;
+border:1px solid var(--line);
+background:#fff;
+font:inherit;
+color:var(--text);
+transition:border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus{
+outline:none;
+border-color:#2f6aa7;
+box-shadow:0 0 0 4px rgba(47,106,167,0.14);
+}
+
+.search-btn{
+padding:15px 24px;
+border:none;
+border-radius:16px;
+background:linear-gradient(90deg, #173965, #2f6aa7);
+color:#fff;
+font:inherit;
+font-weight:700;
+cursor:pointer;
+box-shadow:0 16px 30px rgba(23, 57, 101, 0.18);
+transition:transform 0.2s ease;
+}
+
+.search-btn:hover{
+transform:translateY(-2px);
+}
+
+.status-bar{
+margin-top:18px;
+min-height:28px;
+font-weight:700;
+}
+
+.error{
+color:#c0392b;
+}
+
+.success{
+color:#148353;
+}
+
+.results{
+margin-top:24px;
+display:grid;
+gap:16px;
+}
+
+.empty{
+padding:22px;
+border-radius:20px;
+background:#fff;
+border:1px dashed #bfd1e7;
+color:var(--muted);
+text-align:center;
+}
+
+.card{
+padding:22px;
+border-radius:24px;
+background:#fff;
+border:1px solid var(--line);
+box-shadow:0 14px 30px rgba(20, 55, 100, 0.08);
+}
+
+.card-top{
+display:flex;
+justify-content:space-between;
+gap:16px;
+align-items:flex-start;
+margin-bottom:14px;
+}
+
+.card h3{
+margin:0;
+font-size:1.2rem;
+color:#16345c;
+}
+
+.badge-row{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:flex-end;
+}
+
+.date-badge{
+padding:8px 12px;
+border-radius:999px;
+background:#e9f1fb;
+color:#214a79;
+font-size:0.9rem;
+font-weight:700;
+white-space:nowrap;
+}
+
+.info{
+display:grid;
+gap:14px;
+}
+
+.info-block{
+padding:14px 16px;
+border-radius:18px;
+background:#f7fbff;
+border:1px solid #e1ebf7;
+}
+
+.info-block strong{
+display:block;
+margin-bottom:6px;
+color:#16345c;
+}
+
+.info-block div{
+white-space:pre-wrap;
+line-height:1.55;
+}
+
+.video-link{
+display:inline-flex;
+margin-top:6px;
+padding:10px 14px;
+border-radius:12px;
+background:#fff1df;
+color:#8a4f00;
+font-weight:700;
+text-decoration:none;
+}
+
+.video-link:hover{
+background:#ffe6c1;
+}
+
+@media (max-width: 940px){
+.page{
+grid-template-columns:1fr;
+}
+
+.content,
+.sidebar{
+padding:26px 22px;
+}
+
+.filter-grid{
+grid-template-columns:1fr;
+}
+}
+
+@media (max-width: 640px){
+body{
+padding:12px;
+}
+
+.skill-grid{
+grid-template-columns:1fr;
+}
+
+.card-top{
+flex-direction:column;
+}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<aside class="sidebar">
+<div>
+<img src="logo.png" alt="School logo">
+<h1>Parent Activity Search</h1>
+<p>Choose the month and skill program to see the planned activity, required materials, and video support shared by the teacher.</p>
+</div>
+
+<div class="highlight">
+<strong>Connected Sheet</strong>
+This page reads the same Google Sheet used by the teacher activity form.
+</div>
+
+<div class="skill-grid">
+<div class="skill-chip">Jigyasa Junction</div>
+<div class="skill-chip">Prakriti Rakshak</div>
+<div class="skill-chip">Abhivyakti</div>
+<div class="skill-chip">Chitrakala</div>
+<div class="skill-chip">Nritya Tarang</div>
+<div class="skill-chip">Swaranjali</div>
+<div class="skill-chip">Swasthya Sangam</div>
+<div class="skill-chip">Srijan Shala</div>
+<div class="skill-chip">Khoj Kendra</div>
+</div>
+</aside>
+
+<main class="content">
+<section class="hero">
+<h2>Find Monthly Activities</h2>
+<p>Parents can search by month and skill program, then view all activities for that month along with required materials and the YouTube link shared by the teacher.</p>
+</section>
+
+<section class="filter-box">
+<div class="filter-grid">
+<div class="field">
+<label for="monthSelect">Select Month</label>
+<select id="monthSelect">
+<option value="">Select Month</option>
+<option value="01">January</option>
+<option value="02">February</option>
+<option value="03">March</option>
+<option value="04">April</option>
+<option value="05">May</option>
+<option value="06">June</option>
+<option value="07">July</option>
+<option value="08">August</option>
+<option value="09">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+</div>
+
+<div class="field">
+<label for="skillSelect">Select Skill Program</label>
+<select id="skillSelect">
+<option value="">Select Skill Program</option>
+<option>Jigyasa Junction</option>
+<option>Prakriti Rakshak</option>
+<option>Abhivyakti</option>
+<option>Chitrakala</option>
+<option>Nritya Tarang</option>
+<option>Swaranjali</option>
+<option>Swasthya Sangam</option>
+<option>Srijan Shala</option>
+<option>Khoj Kendra</option>
+</select>
+</div>
+
+<div class="field">
+<label>Select Class Group</label>
+<div class="radio-group">
+<label class="radio-option" for="classGroupPrimary">
+<input id="classGroupPrimary" name="classGroup" type="radio" value="Class III to V">
+<span>Class III to V</span>
+</label>
+<label class="radio-option" for="classGroupMiddle">
+<input id="classGroupMiddle" name="classGroup" type="radio" value="Class VI to VIII">
+<span>Class VI to VIII</span>
+</label>
+</div>
+</div>
+
+<button class="search-btn" id="searchBtn">Search</button>
+</div>
+
+<div class="status-bar" id="statusBar"></div>
+</section>
+
+<section class="results" id="results">
+<div class="empty">Select a month and skill program, then click search.</div>
+</section>
+</main>
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycby9H40NMocJW2_8sSZYvaq77Oy29aFUNT7bpd1sJSjiy97EKjuzgio1vPf7TRE9judncg/exec";
+const monthNames = {
+"01":"January",
+"02":"February",
+"03":"March",
+"04":"April",
+"05":"May",
+"06":"June",
+"07":"July",
+"08":"August",
+"09":"September",
+"10":"October",
+"11":"November",
+"12":"December"
+};
+
+const monthSelect = document.getElementById("monthSelect");
+const skillSelect = document.getElementById("skillSelect");
+const searchBtn = document.getElementById("searchBtn");
+const statusBar = document.getElementById("statusBar");
+const results = document.getElementById("results");
+const classGroupRadios = document.querySelectorAll('input[name="classGroup"]');
+
+function setStatus(message, type = "") {
+statusBar.className = `status-bar ${type}`.trim();
+statusBar.textContent = message;
+}
+
+function formatDisplayDate(dateValue) {
+const parsed = parseMonthFromDate(dateValue);
+
+if (parsed.displayDate) {
+return parsed.displayDate;
+}
+
+return dateValue;
+}
+
+function parseMonthFromDate(dateValue) {
+const raw = String(dateValue || "").trim();
+
+if (!raw) {
+return { month: "", displayDate: "" };
+}
+
+const isoMatch = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+if (isoMatch) {
+const [, year, month, day] = isoMatch;
+  return {
+    month: month.padStart(2, "0"),
+    displayDate: `${day.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`
+  };
+}
+
+const slashMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+if (slashMatch) {
+const [, first, second, year] = slashMatch;
+const firstNum = Number(first);
+const secondNum = Number(second);
+
+if (firstNum > 12) {
+    return {
+      month: second.padStart(2, "0"),
+      displayDate: `${first.padStart(2, "0")}-${second.padStart(2, "0")}-${year}`
+    };
+}
+
+if (secondNum > 12) {
+    return {
+      month: first.padStart(2, "0"),
+      displayDate: `${second.padStart(2, "0")}-${first.padStart(2, "0")}-${year}`
+    };
+}
+
+  return {
+    month: second.padStart(2, "0"),
+    displayDate: `${first.padStart(2, "0")}-${second.padStart(2, "0")}-${year}`
+  };
+}
+
+const jsDate = new Date(raw);
+if (!Number.isNaN(jsDate.getTime())) {
+const month = String(jsDate.getMonth() + 1).padStart(2, "0");
+const day = String(jsDate.getDate()).padStart(2, "0");
+const year = String(jsDate.getFullYear());
+  return {
+    month,
+    displayDate: `${day}-${month}-${year}`
+  };
+}
+
+return { month: "", displayDate: raw };
+}
+
+function renderResults(items, selectedMonth, selectedSkill) {
+if (!items.length) {
+results.innerHTML = `<div class="empty">No activity found for ${monthNames[selectedMonth]} in ${selectedSkill}.</div>`;
+return;
+}
+
+results.innerHTML = items.map((item) => `
+<article class="card">
+  <div class="card-top">
+    <h3>Activity Details</h3>
+    <div class="badge-row">
+      <div class="date-badge">${formatDisplayDate(item.date)}</div>
+      ${item.classGroup ? `<div class="date-badge">${item.classGroup}</div>` : ""}
+      ${item.activityId ? `<div class="date-badge">ID: ${item.activityId}</div>` : ""}
+    </div>
+  </div>
+  <div class="info">
+    <div class="info-block">
+      <strong>Activity</strong>
+      <div>${item.activity || "Not available"}</div>
+    </div>
+    <div class="info-block">
+      <strong>Material Required</strong>
+      <div>${item.materials || "Not available"}</div>
+    </div>
+    <div class="info-block">
+      <strong>YouTube Link</strong>
+      ${item.youtubeLink ? `<a class="video-link" href="${item.youtubeLink}" target="_blank" rel="noopener noreferrer">Open Video</a>` : "<div>Not available</div>"}
+    </div>
+    <div class="info-block">
+      <strong>Student Outcome</strong>
+      <div>${item.outcome || "Not available"}</div>
+    </div>
+  </div>
+</article>
+`).join("");
+}
+
+async function searchActivities() {
+const selectedMonth = monthSelect.value;
+const selectedSkill = skillSelect.value;
+const selectedClassGroup = document.querySelector('input[name="classGroup"]:checked')?.value || "";
+
+if (!selectedMonth || !selectedSkill || !selectedClassGroup) {
+setStatus("Please select month, skill program, and class group.", "error");
+results.innerHTML = '<div class="empty">Please select month, skill program, and class group to search.</div>';
+return;
+}
+
+setStatus("Loading activities...", "success");
+results.innerHTML = '<div class="empty">Fetching activities from Google Sheet...</div>';
+
+const url = `${scriptURL}?action=searchParentActivities&skillProgram=${encodeURIComponent(selectedSkill)}&month=${encodeURIComponent(selectedMonth)}`;
+
+try {
+const response = await fetch(url);
+const data = await response.json();
+
+if (data.status !== "success") {
+throw new Error(data.message || "Unable to load activities.");
+}
+
+const activities = (data.activities || []).filter((item) => {
+const parsedDate = parseMonthFromDate(item.date);
+return item.activity && parsedDate.month === selectedMonth && item.classGroup === selectedClassGroup;
+});
+
+setStatus(`${activities.length} activity record(s) found for ${monthNames[selectedMonth]}.`, "success");
+renderResults(activities, selectedMonth, selectedSkill);
+} catch (error) {
+setStatus(`Unable to load data. ${error.message}`, "error");
+results.innerHTML = '<div class="empty">Could not fetch activity data right now.</div>';
+}
+}
+
+searchBtn.addEventListener("click", searchActivities);
+
+classGroupRadios.forEach((radio) => {
+radio.addEventListener("change", () => {
+document.querySelectorAll(".radio-option").forEach((option) => {
+const input = option.querySelector('input[name="classGroup"]');
+option.classList.toggle("selected", Boolean(input?.checked));
+});
+});
+});
+</script>
+</body>
+</html>
