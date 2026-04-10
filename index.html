@@ -176,6 +176,13 @@ transition:transform 0.2s ease, box-shadow 0.2s ease;
 transform:translateY(-2px);
 }
 
+.card a.disabled-link{
+pointer-events:none;
+opacity:0.6;
+transform:none;
+cursor:not-allowed;
+}
+
 .primary{
 background:linear-gradient(90deg, #173965, #2f6faa);
 color:#fff;
@@ -276,7 +283,7 @@ font-size:1.9rem;
 <div class="badge">Public</div>
 <h3>Student Selection Form</h3>
 <p>Open the student activity selection form for Kaushal Bodh registration and seat checking.</p>
-<a class="muted" href="new.html">Open Student Form</a>
+<a class="muted disabled-link" href="#" aria-disabled="true">Disabled</a>
 </article>
 
 <article class="card">
